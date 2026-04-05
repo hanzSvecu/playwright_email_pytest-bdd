@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # TODO: move it to .env / GHA env vars as well as params?
-HEADLESS = os.getenv("HEADLESS", "true").lower() == "false"
-SLOW_MO = int(os.getenv("SLOW_MO", "500"))
+HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
+SLOW_MO = int(os.getenv("SLOW_MO", "0"))
 
 # TODO: add a function to clean data (sent emails) after tests?
 
