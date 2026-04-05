@@ -28,3 +28,9 @@ jobs:
       - name: Run tests
         run: |
           pytest -q
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-artifacts
+          path: artifacts/

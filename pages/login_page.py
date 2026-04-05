@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from playwright.sync_api import Page, expect
 
 
@@ -9,11 +11,24 @@ class LoginPage:
         self.login_btn = page.get_by_test_id('btn:login_action')
 
     def open(self, base_url: str):
-        self.page.goto(base_url)
-        self.is_loaded()
+        self.page.goto(base_url, wait_until="domcontentloaded")
+        # to check problematic part
+        try:
+            self.is_loaded()
+        except Exception:
+            Path("artifacts").mkdir(exist_ok=True)
+            print(f"Current URL: {self.page.url}")
+            self.page.screenshot(
+                path="artifacts/login-page-failed.png",
+                full_page=True
+            )
+            with open("artifacts/login-page-failed.html", "w", encoding="utf-8") as f:
+                f.write(self.page.content())
+            raise
 
     def is_loaded(self):
-        expect(self.login_btn).to_be_visible()
+        expect(self.login_btn).to_be_attached(timeout=10000)
+        expect(self.login_btn).to_be_visible(timeout=10000)
 
     def fill_email(self, email: str):
         self.email.click()
