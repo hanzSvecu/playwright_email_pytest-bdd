@@ -54,3 +54,11 @@ def user_received_email(page):
 @then("user received email with attachment")
 def user_received_email_with_attachment(page):
     EmailPage(page).mail_received(with_attachment=True)
+
+@when("the user clicks logout")
+def user_logs_out(page):
+    EmailPage(page).logout()
+
+@then("the user is logged out")
+def user_logs_out(page):
+    LoginPage(page).is_loaded()
