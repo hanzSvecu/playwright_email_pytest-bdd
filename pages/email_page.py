@@ -50,17 +50,7 @@ class EmailPage:
             expect(self.new_email_dialog.get_by_text("funny_attachment.png")).to_be_visible(timeout=15000)
         self.send_btn.click()
 
-    #TODO: verify functionality
     def mail_received(self, with_attachment: bool = False, subject="Interesting subject"):
-        # email_item = self.received_emails.filter(has_text=subject).first
-        # expect(email_item).to_be_visible(timeout=300000)
-        # expect(email_item).to_be_enabled(timeout=10000)
-        #
-        # email_item.click(trial=True, timeout=10000)
-        # email_item.click()
-
-        # expect(self.page.get_by_text(subject, exact=True)).to_be_visible(timeout=10000)
-
         email_row = self.page.locator('li.list-row').filter(has_text=subject).first
         expect(email_row).to_be_visible(timeout=300000)
         email_row.click(trial=True, timeout=10000)
