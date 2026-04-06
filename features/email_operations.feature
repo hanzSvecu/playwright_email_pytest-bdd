@@ -11,5 +11,12 @@ Feature: Test email operations
 
   Scenario: Send email and verify that email was received
   Given user was logged in
+  And emails were deleted
   When user sends email
   Then user received email
+
+  Scenario: Send email with attachment and verify that email was received
+  Given user was logged in
+  And emails were deleted
+  When user sends email with attachment
+  Then user received email with attachment

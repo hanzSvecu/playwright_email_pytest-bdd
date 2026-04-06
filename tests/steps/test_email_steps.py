@@ -32,13 +32,25 @@ def user_was_logged_in(page, base_url, email_username, email_password):
     LoginPage(page).click_login()
     EmailPage(page).is_loaded()
 
+@given("emails were deleted")
+def delete_emails(page):
+    EmailPage(page).is_loaded()
+    EmailPage(page).delete_emails()
 
 @when("user sends email")
 def logged_user_send_email(page, email_username):
     EmailPage(page).is_loaded()
     EmailPage(page).send_mail(email_username)
 
+@when("user sends email with attachment")
+def logged_user_send_email_with_attachment(page, email_username):
+    EmailPage(page).is_loaded()
+    EmailPage(page).send_mail(email_username, with_attachment=True)
 
 @then("user received email")
 def user_received_email(page):
     EmailPage(page).mail_received()
+
+@then("user received email with attachment")
+def user_received_email_with_attachment(page):
+    EmailPage(page).mail_received(with_attachment=True)
