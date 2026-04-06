@@ -8,8 +8,9 @@ load_dotenv()
 # TODO: move it to .env / GHA env vars as well as params?
 HEADLESS = os.getenv("HEADLESS", "true").lower() == "true"
 SLOW_MO = int(os.getenv("SLOW_MO", "0"))
-
-# TODO: add a function to clean data (sent emails) after tests?
+# for local debugging / presentation
+# HEADLESS = False
+# SLOW_MO = int(os.getenv("SLOW_MO", "500"))
 
 @pytest.fixture
 def base_url(): return os.getenv("BASE_URL")
