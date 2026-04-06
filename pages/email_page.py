@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from playwright.sync_api import Page, expect
 
 
@@ -48,8 +50,42 @@ class EmailPage:
             expect(self.new_email_dialog.get_by_text("funny_attachment.png")).to_be_visible(timeout=15000)
         self.send_btn.click()
 
-    def mail_received(self, subject="Interesting subject"):
-        expect(self.received_emails).to_contain_text(subject)
+    #TODO: verify functionality
+    def mail_received(self, with_attachment: bool = False, subject="Interesting subject"):
+        # email_item = self.received_emails.filter(has_text=subject).first
+        # expect(email_item).to_be_visible(timeout=300000)
+        # expect(email_item).to_be_enabled(timeout=10000)
+        #
+        # email_item.click(trial=True, timeout=10000)
+        # email_item.click()
+
+        # expect(self.page.get_by_text(subject, exact=True)).to_be_visible(timeout=10000)
+
+        email_row = self.page.locator('li.list-row').filter(has_text=subject).first
+        expect(email_row).to_be_visible(timeout=300000)
+        email_row.click(trial=True, timeout=10000)
+
+        if with_attachment:
+            email_row.click()
+            expect(self.page.get_by_text("funny_attachment.png")).to_be_visible(timeout=10000)
+
+    def delete_emails(self):
+        if self.mailbox_empty_picture.is_visible():
+            expect(self.mailbox_empty_picture).to_be_visible()
+            return
+
+        expect(self.select_all_emails).to_be_visible(timeout=10000)
+        expect(self.select_all_emails).to_be_enabled(timeout=10000)
+        self.select_all_emails.check(trial=True, timeout=10000)
+        self.select_all_emails.check()
+        expect(self.select_all_emails).to_be_checked(timeout=5000)
+
+        expect(self.delete_selected).to_be_visible(timeout=10000)
+        expect(self.delete_selected).to_be_enabled(timeout=10000)
+        self.delete_selected.click(trial=True, timeout=10000)
+        self.delete_selected.click()
+
+        expect(self.mailbox_empty_picture).to_be_visible(timeout=15000)
 
     def logout(self):
         self.logout_btn.click()
